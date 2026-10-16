@@ -1,0 +1,547 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>Developer Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Source+Sans+3:wght@400;600&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* Layout: single left-aligned column; big name, a status block beside it, then ruled sections for skills, projects, build log, contact. */
+      :root {
+        color-scheme: light;
+        --bg: #edf0f2;
+        --surface: #f7f9fa;
+        --fg: #0f1b26;
+        --muted: #55636f;
+        --line: #cbd3d9;
+        --accent: #0a6b57;
+        --accent-fg: #ffffff;
+        --display: "Bricolage Grotesque", "Helvetica Neue", Arial, sans-serif;
+        --body: "Source Sans 3", "Segoe UI", Helvetica, Arial, sans-serif;
+        --mono:
+          "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root:not([data-theme="light"]) {
+          --bg: #0d1419;
+          --surface: #141d24;
+          --fg: #e6ecef;
+          --muted: #93a1ab;
+          --line: #26343e;
+          --accent: #4fc3a1;
+          --accent-fg: #07130f;
+          color-scheme: dark;
+        }
+      }
+      :root[data-theme="dark"] {
+        --bg: #0d1419;
+        --surface: #141d24;
+        --fg: #e6ecef;
+        --muted: #93a1ab;
+        --line: #26343e;
+        --accent: #4fc3a1;
+        --accent-fg: #07130f;
+        color-scheme: dark;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--fg);
+        font-family: var(--body);
+        font-size: 18px;
+        line-height: 1.6;
+        padding-left: max(16px, env(safe-area-inset-left, 0px));
+        padding-right: max(16px, env(safe-area-inset-right, 0px));
+        padding-block: 0;
+      }
+      .wrap {
+        max-width: 920px;
+        margin: 0 auto;
+      }
+      a {
+        color: var(--accent);
+        text-underline-offset: 3px;
+      }
+      a:focus-visible,
+      button:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 3px;
+      }
+
+      header.top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 16px;
+        padding-block: 20px;
+        border-bottom: 1px solid var(--line);
+        font-family: var(--mono);
+        font-size: 13px;
+      }
+      header.top nav {
+        display: flex;
+        gap: 20px;
+        flex-wrap: wrap;
+      }
+      header.top a {
+        color: var(--muted);
+        text-decoration: none;
+      }
+      header.top a:hover {
+        color: var(--fg);
+      }
+
+      .hero {
+        display: grid;
+        grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+        gap: 40px;
+        padding-block: 72px 64px;
+        align-items: end;
+      }
+      .hero h1 {
+        font-family: var(--display);
+        font-weight: 700;
+        font-size: clamp(44px, 8vw, 84px);
+        line-height: 0.98;
+        letter-spacing: -0.03em;
+        margin: 0 0 24px;
+        text-wrap: balance;
+      }
+      .hero .role {
+        font-family: var(--mono);
+        font-size: 14px;
+        color: var(--accent);
+        margin: 0 0 16px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+      .hero p.lede {
+        margin: 0;
+        max-width: 34em;
+        color: var(--fg);
+      }
+
+      .status {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        padding: 18px 20px;
+        font-family: var(--mono);
+        font-size: 13.5px;
+        line-height: 1.9;
+        min-width: 0;
+      }
+      .status .row {
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+        border-bottom: 1px dashed var(--line);
+      }
+      .status .row:last-child {
+        border-bottom: 0;
+      }
+      .status .k {
+        color: var(--muted);
+      }
+      .status .v {
+        text-align: right;
+        overflow-wrap: anywhere;
+      }
+      .dot {
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--accent);
+        margin-right: 8px;
+      }
+
+      section {
+        padding-block: 56px;
+        border-top: 1px solid var(--line);
+      }
+      .sec-head {
+        display: grid;
+        grid-template-columns: 180px minmax(0, 1fr);
+        gap: 40px;
+      }
+      .sec-head h2 {
+        font-family: var(--mono);
+        font-size: 13px;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: var(--muted);
+        margin: 6px 0 0;
+      }
+      .sec-body {
+        min-width: 0;
+      }
+      .sec-body > p:first-child {
+        margin-top: 0;
+      }
+
+      .skills {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 28px 32px;
+      }
+      .skills h3 {
+        font-family: var(--display);
+        font-size: 20px;
+        margin: 0 0 8px;
+      }
+      .chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .chip {
+        font-family: var(--mono);
+        font-size: 13px;
+        padding: 3px 10px;
+        border: 1px solid var(--line);
+        border-radius: 4px;
+        background: var(--surface);
+      }
+
+      .projects {
+        display: grid;
+        gap: 16px;
+      }
+      .project {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 8px 24px;
+        padding: 20px;
+        border: 1px dashed var(--line);
+        border-radius: 6px;
+      }
+      .project h3 {
+        font-family: var(--display);
+        font-size: 22px;
+        margin: 0;
+      }
+      .project p {
+        margin: 0;
+        color: var(--muted);
+        grid-column: 1;
+      }
+      .tag {
+        font-family: var(--mono);
+        font-size: 12px;
+        color: var(--muted);
+        border: 1px solid var(--line);
+        padding: 2px 8px;
+        border-radius: 4px;
+        align-self: start;
+        white-space: nowrap;
+      }
+      .note {
+        font-size: 15px;
+        color: var(--muted);
+        margin: 20px 0 0;
+      }
+
+      .log {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        font-family: var(--mono);
+        font-size: 14px;
+      }
+      .log li {
+        display: grid;
+        grid-template-columns: 96px minmax(0, 1fr);
+        gap: 16px;
+        padding: 10px 0;
+        border-bottom: 1px dashed var(--line);
+      }
+      .log time {
+        color: var(--muted);
+      }
+
+      .contact-line {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 12px;
+        margin: 0 0 12px;
+      }
+      .contact-line code {
+        font-family: var(--mono);
+        font-size: 16px;
+        padding: 6px 12px;
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 4px;
+        overflow-wrap: anywhere;
+      }
+      button.copy {
+        font-family: var(--mono);
+        font-size: 13px;
+        background: var(--accent);
+        color: var(--accent-fg);
+        border: 0;
+        border-radius: 4px;
+        padding: 8px 14px;
+        cursor: pointer;
+      }
+      button.copy:hover {
+        filter: brightness(1.08);
+      }
+
+      footer {
+        padding-block: 32px 48px;
+        border-top: 1px solid var(--line);
+        font-family: var(--mono);
+        font-size: 12.5px;
+        color: var(--muted);
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+        flex-wrap: wrap;
+      }
+
+      @media (max-width: 720px) {
+        body {
+          font-size: 17px;
+        }
+        .hero {
+          grid-template-columns: 1fr;
+          padding-block: 48px 40px;
+        }
+        .sec-head {
+          grid-template-columns: 1fr;
+          gap: 16px;
+        }
+        .project {
+          grid-template-columns: 1fr;
+        }
+        .log li {
+          grid-template-columns: 1fr;
+          gap: 2px;
+        }
+      }
+      @media (prefers-reduced-motion: no-preference) {
+        button.copy {
+          transition: filter 0.15s;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <header class="top">
+        <span>~/portfolio</span>
+        <nav>
+          <a href="#skills">skills</a>
+          <a href="#projects">projects</a>
+          <a href="#log">build log</a>
+          <a href="#contact">contact</a>
+        </nav>
+      </header>
+
+      <div class="hero">
+        <div>
+          <p class="role">Software developer</p>
+          <h1>Your Name</h1>
+          <p class="lede">
+            I build software and I am looking for my first developer role.
+            Replace this line with one or two sentences on what you like
+            building and the kind of team you want to join.
+          </p>
+        </div>
+        <div class="status" aria-label="Current status">
+          <div class="row">
+            <span class="k">status</span
+            ><span class="v"><span class="dot"></span>open to work</span>
+          </div>
+          <div class="row">
+            <span class="k">looking for</span
+            ><span class="v">full-time roles</span>
+          </div>
+          <div class="row">
+            <span class="k">based in</span><span class="v">City, Province</span>
+          </div>
+          <div class="row">
+            <span class="k">work mode</span
+            ><span class="v">remote / hybrid / on-site</span>
+          </div>
+        </div>
+      </div>
+
+      <section id="skills">
+        <div class="sec-head">
+          <h2>Skills</h2>
+          <div class="sec-body">
+            <div class="skills">
+              <div>
+                <h3>Languages</h3>
+                <div class="chips">
+                  <span class="chip">Python</span
+                  ><span class="chip">JavaScript</span
+                  ><span class="chip">SQL</span>
+                </div>
+              </div>
+              <div>
+                <h3>Frameworks</h3>
+                <div class="chips">
+                  <span class="chip">React</span
+                  ><span class="chip">Node.js</span
+                  ><span class="chip">Flask</span>
+                </div>
+              </div>
+              <div>
+                <h3>Tools</h3>
+                <div class="chips">
+                  <span class="chip">Git</span><span class="chip">Linux</span
+                  ><span class="chip">Docker</span>
+                </div>
+              </div>
+            </div>
+            <p class="note">
+              Example skills. Swap in the ones you can talk about in an
+              interview.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section id="projects">
+        <div class="sec-head">
+          <h2>Projects</h2>
+          <div class="sec-body">
+            <p>
+              Three slots for the first things you ship. Each one gets a short
+              description, the stack, a live link and a repository link.
+            </p>
+            <div class="projects">
+              <article class="project">
+                <h3>Project one</h3>
+                <span class="tag">planned</span>
+                <p>
+                  A small full-stack app, such as a task tracker with login and
+                  a database.
+                </p>
+              </article>
+              <article class="project">
+                <h3>Project two</h3>
+                <span class="tag">planned</span>
+                <p>
+                  An API or command-line tool that solves a problem you have run
+                  into yourself.
+                </p>
+              </article>
+              <article class="project">
+                <h3>Project three</h3>
+                <span class="tag">planned</span>
+                <p>
+                  A project that uses a public data set or a third-party API.
+                </p>
+              </article>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="log">
+        <div class="sec-head">
+          <h2>Build log</h2>
+          <div class="sec-body">
+            <ul class="log">
+              <li>
+                <time datetime="2026-10-16">2026-10-16</time
+                ><span>Started this portfolio site.</span>
+              </li>
+              <li>
+                <time datetime="2026-10-30">next</time
+                ><span
+                  >Pick the first project and write its README before the
+                  code.</span
+                >
+              </li>
+            </ul>
+            <p class="note">
+              Add a line each time you finish something. A dated log shows
+              employers you keep building.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section id="contact">
+        <div class="sec-head">
+          <h2>Contact</h2>
+          <div class="sec-body">
+            <p>Email is the best way to reach me.</p>
+            <div class="contact-line">
+              <code id="email">you@example.com</code>
+              <button class="copy" id="copy-btn" type="button">
+                Copy email
+              </button>
+            </div>
+            <p class="note">
+              GitHub:
+              <a href="https://github.com/" rel="noopener"
+                >github.com/your-username</a
+              >
+              &nbsp;·&nbsp; LinkedIn:
+              <a href="https://www.linkedin.com/" rel="noopener"
+                >linkedin.com/in/your-name</a
+              >
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <footer>
+        <span>© 2026 Your Name</span>
+        <span>Built with HTML and CSS</span>
+      </footer>
+    </div>
+
+    <script>
+      (function () {
+        var btn = document.getElementById("copy-btn");
+        var email = document.getElementById("email");
+        btn.addEventListener("click", function () {
+          var text = email.textContent;
+          var done = function () {
+            btn.textContent = "Copied";
+            setTimeout(function () {
+              btn.textContent = "Copy email";
+            }, 1800);
+          };
+          var fallback = function () {
+            try {
+              var r = document.createRange();
+              r.selectNodeContents(email);
+              var s = window.getSelection();
+              s.removeAllRanges();
+              s.addRange(r);
+              btn.textContent = "Press Ctrl+C";
+            } catch (e) {}
+          };
+          try {
+            navigator.clipboard.writeText(text).then(done, fallback);
+          } catch (e) {
+            fallback();
+          }
+        });
+      })();
+    </script>
+  </body>
+</html>
